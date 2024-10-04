@@ -1,5 +1,5 @@
-import ExcelJS from 'exceljs';
 import { useState } from 'react';
+import { read, writeFile } from 'xlsx';
 import './App.css';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
@@ -11,23 +11,22 @@ const updateAGraphIncludedExcelFile = async (excelFilePath: string) => {
     // Read the file as an ArrayBuffer
     const arrayBuffer = await blob.arrayBuffer();
 
-    const workbook = new ExcelJS.Workbook();
     // Read the workbook from the ArrayBuffer
-    await workbook.xlsx.load(arrayBuffer);
+    const workbook = read(arrayBuffer, { type: 'array' });
 
-    const buffer = await workbook.xlsx.writeBuffer();
+    // Step 2: Access the desired sheet by name or index
+    // For example, first sheet
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
 
-    const workbookBlob = new Blob([buffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    });
-    const url = URL.createObjectURL(workbookBlob);
+    // Step 3: Modify the sheet (e.g., update cell A1)
+    worksheet.B4 = { t: 'n', v: 25 };
+    worksheet.C4 = { t: 'n', v: 25 };
+    worksheet.D4 = { t: 'n', v: 25 };
+    worksheet.E4 = { t: 'n', v: 25 };
 
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `updated-at-${new Date().getTime()}.xlsx`;
-    link.click();
-
-    URL.revokeObjectURL(url);
+    // Step 4: Write the updated workbook back to a file
+    writeFile(workbook, 'updated_by_sheet_js.xlsx');
   } catch (error) {
     console.error('Error updating graph:', error);
   }

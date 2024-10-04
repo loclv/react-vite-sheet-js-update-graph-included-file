@@ -1,18 +1,19 @@
 {
-  "name": "react-vite-excel-js-update-graph-included-file",
+  "name": "react-vite-sheet-js-update-graph-included-file",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "d": "vite",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
-    "exceljs": "^4.4.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
