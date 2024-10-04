@@ -48,3 +48,7 @@ export default tseslint.config({
   },
 })
 ```
+
+## Excel file example
+
+- Source: <https://www.myexcelonline.com/blog/create-a-radar-chart-for-performance-reviews/>

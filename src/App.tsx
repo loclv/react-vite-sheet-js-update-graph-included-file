@@ -1,7 +1,39 @@
+import ExcelJS from 'exceljs';
 import { useState } from 'react';
+import './App.css';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
-import './App.css';
+
+const updateAGraphIncludedExcelFile = async (excelFilePath: string) => {
+  try {
+    const response = await fetch(excelFilePath);
+    const blob = await response.blob();
+    // Read the file as an ArrayBuffer
+    const arrayBuffer = await blob.arrayBuffer();
+
+    const workbook = new ExcelJS.Workbook();
+    // Read the workbook from the ArrayBuffer
+    await workbook.xlsx.load(arrayBuffer);
+
+    const buffer = await workbook.xlsx.writeBuffer();
+
+    const workbookBlob = new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    const url = URL.createObjectURL(workbookBlob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `updated-at-${new Date().getTime()}.xlsx`;
+    link.click();
+
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error updating graph:', error);
+  }
+};
+
+updateAGraphIncludedExcelFile('/Radar-Chart.xlsx');
 
 function App() {
   const [count, setCount] = useState(0);
